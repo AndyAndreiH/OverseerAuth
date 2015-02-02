@@ -1,3 +1,8 @@
 name: OverseerAuth
 main: io.github.andyandreih.overseerauth.OverseerAuth
 version: 0.0.1-SNAPSHOT
+commands:
+   overseer:
+      description: The main command for Overseer
+      usage: /overseer [SubCommand]
+      permission: overseer.overseer

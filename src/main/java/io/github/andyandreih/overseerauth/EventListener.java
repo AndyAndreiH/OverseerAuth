@@ -10,6 +10,6 @@ public final class EventListener implements Listener
     @EventHandler
     public void onLogin(PlayerLoginEvent event)
     {
-        Bukkit.getServer().broadcastMessage(event.getPlayer().getDisplayName() + " joined the server.");
+
     }
 }
