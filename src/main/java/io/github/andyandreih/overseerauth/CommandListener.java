@@ -10,11 +10,6 @@ public class CommandListener implements CommandExecutor
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args)
     {
-        if((sender instanceof Player) && !(sender.isOp()))
-        {
-            sender.sendMessage("[ERROR] Commands can only be accessed by Ops!");
-            return true;
-        }
         if(cmd.getName().equalsIgnoreCase("overseer"))
         {
             if(args.length == 0)

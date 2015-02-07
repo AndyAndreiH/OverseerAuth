@@ -2,7 +2,7 @@
   <artifact type="jar" build-on-make="true" name="OverseerAuth:jar">
     <output-path>$PROJECT_DIR$/out/artifacts/OverseerAuth_jar</output-path>
     <root id="archive" name="OverseerAuth.jar">
-      <element id="module-output" name="Auth" />
+      <element id="module-output" name="OverseerAuth" />
     </root>
   </artifact>
 </component>
