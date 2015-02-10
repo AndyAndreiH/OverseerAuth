@@ -23,7 +23,7 @@ import java.util.logging.Logger;
 public final class OverseerAuth extends JavaPlugin
 {
     CommandListener cmdExec = new CommandListener();
-    DatabaseController dbCtrl;
+    public static DatabaseController dbCtrl;
 
     @Override
     public void onEnable()
@@ -43,7 +43,10 @@ public final class OverseerAuth extends JavaPlugin
         dbCtrl = new DatabaseController();
         dbCtrl.initDb(getDataFolder().getAbsolutePath());
         if(dbCtrl.openDb())
+        {
             dbCtrl.generateTable();
+            dbCtrl.insertUser("test-uuid-string", "Andrei");
+        }
         getLogger().info("Generated local database.");
     }
 }

@@ -55,13 +55,50 @@ public class DatabaseController
 
     public void generateTable()
     {
-        try{
-            dbLocal.query("CREATE TABLE users (" +
-                    "id number(3)," +
-                    "uuid varchar(60)," +
-                    "joinDate date," +
-                    "displayName varchar(30));");
+        if(!dbLocal.isTable("users"))
+        {
+            try
+            {
+                dbLocal.query("CREATE TABLE users (" +
+                        "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                        "uuid VARCHAR(60) UNIQUE," +
+                        "joinDate DATETIME DEFAULT CURRENT_TIMESTAMP," +
+                        "displayName VARCHAR(30) UNIQUE);");
+            }
+            catch (SQLException e)
+            {
+                e.printStackTrace();
+            }
         }
-        catch(SQLException ex) {}
+    }
+
+    public void insertUser(String uuid, String displayName)
+    {
+        try
+        {
+            dbLocal.query("INSERT INTO users (uuid,displayName) VALUES ('" +
+                uuid +
+                "','" +
+                displayName +
+                "')");
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    public ResultSet getUser(String uuid)
+    {
+        ResultSet result = null;
+        try
+        {
+            result = dbLocal.query("SELECT * FROM users WHERE uuid='" + uuid + "'");
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        return result;
     }
 }
