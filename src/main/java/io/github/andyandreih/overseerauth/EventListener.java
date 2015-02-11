@@ -11,32 +11,30 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.UUID;
 
-public final class EventListener implements Listener
-{
+public final class EventListener implements Listener {
+    OverseerAuth mainClass = null;
 
     @EventHandler
-    public void onLogin(PlayerLoginEvent event)
-    {
+    public void onLogin(PlayerLoginEvent event) {
         UUIDFetcher fetcher = new UUIDFetcher(Arrays.asList(event.getPlayer().getDisplayName()));
-        Map<String, UUID> result = null;
-        try
-        {
-            result = fetcher.call();
-        }
-        catch (Exception e)
-        {
+        Map<String, UUID> userUUIDs = null;
+        try {
+            userUUIDs = fetcher.call();
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        ResultSet userData = OverseerAuth.dbCtrl.getUser(result.get(event.getPlayer().getDisplayName()).toString());
-        String userDataName = null;
-        try { userDataName = userData.getString("displayName"); } catch (SQLException e) { e.printStackTrace(); }
-        if(userDataName != null)
-        {
-            event.getPlayer().sendMessage("Please log in using the /login [Password] command!");
+        String userUUID = "";
+        for(Map.Entry<String, UUID> entry : userUUIDs.entrySet()) {
+            if(entry.getKey().equalsIgnoreCase(event.getPlayer().getDisplayName())) {
+                userUUID = entry.getValue().toString();
+            }
         }
-        else
-        {
-            event.getPlayer().sendMessage("Please register using the /register [Password] command!");
+        Map<String, String> userData = mainClass.dbCtrl.getUser(userUUID);
+        if(userData.containsKey("id")) {
+            event.getPlayer().sendMessage("Please log in using the /login <password> command!");
+        }
+        else {
+            event.getPlayer().sendMessage("Please register using the /register <password> command!");
         }
     }
 }

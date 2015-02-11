@@ -8,6 +8,7 @@ import org.bukkit.plugin.UnknownDependencyException;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.command.CommandExecutor;
 
+import java.awt.*;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -20,32 +21,31 @@ import java.nio.channels.ReadableByteChannel;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public final class OverseerAuth extends JavaPlugin
-{
-    CommandListener cmdExec = new CommandListener();
-    public static DatabaseController dbCtrl;
+public final class OverseerAuth extends JavaPlugin {
+    public static CommandListener cmdExec = new CommandListener();
+    public static DatabaseController dbCtrl = new DatabaseController();
+    public static EventListener eventListen = new EventListener();
 
     @Override
-    public void onEnable()
-    {
-        if(!getDataFolder().exists())
-        {
+    public void onEnable() {
+        cmdExec.mainClass = this;
+        dbCtrl.mainClass = this;
+        eventListen.mainClass = this;
+
+        if(!getDataFolder().exists()) {
             getDataFolder().mkdir();
             getLogger().info("Created plugin folder.");
         }
 
-        getServer().getPluginManager().registerEvents(new EventListener(), this);
+        getServer().getPluginManager().registerEvents(eventListen, this);
         getLogger().info("Event listeners registered.");
 
         getCommand("overseer").setExecutor(cmdExec);
         getLogger().info("Commands registered.");
 
-        dbCtrl = new DatabaseController();
         dbCtrl.initDb(getDataFolder().getAbsolutePath());
-        if(dbCtrl.openDb())
-        {
+        if(dbCtrl.openDb()) {
             dbCtrl.generateTable();
-            dbCtrl.insertUser("test-uuid-string", "Andrei");
         }
         getLogger().info("Generated local database.");
     }

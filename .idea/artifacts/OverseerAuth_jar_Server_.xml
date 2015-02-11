@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="OverseerAuth:jar(Server)">
+    <output-path>$USER_HOME$/Desktop/Bukkit/plugins</output-path>
+    <root id="archive" name="OverseerAuth.jar">
+      <element id="module-output" name="OverseerAuth" />
+    </root>
+  </artifact>
+</component>
