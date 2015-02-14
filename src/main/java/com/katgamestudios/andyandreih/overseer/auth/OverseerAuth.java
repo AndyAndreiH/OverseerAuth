@@ -1,8 +1,6 @@
 package com.katgamestudios.andyandreih.overseer.auth;
 
-import com.katgamestudios.andyandreih.overseer.main.DatabaseController;
-import com.katgamestudios.andyandreih.overseer.main.OverseerMain;
-import com.katgamestudios.andyandreih.overseer.main.UUIDFetcher;
+import com.katgamestudios.andyandreih.overseer.main.*;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -12,20 +10,18 @@ import java.util.UUID;
 
 public final class OverseerAuth extends JavaPlugin {
     public static DatabaseController dbCtrl = new DatabaseController();
-    public static CommandListener cmdExec = new CommandListener();
     public static EventListener eventListen = new EventListener();
 
     Map<String, Boolean> playerLogin = new HashMap<String, Boolean>();
 
     @Override
     public void onEnable() {
-        cmdExec.mainClass = this;
         eventListen.mainClass = this;
 
         getServer().getPluginManager().registerEvents(eventListen, this);
         getLogger().info("Event listeners registered.");
 
-        getCommand("overseer").setExecutor(cmdExec);
+        CommandListener.registerSubCommand("simulate", new AuthCommandListener());
         getLogger().info("Commands registered.");
 
         dbCtrl.initDb(OverseerMain.dataFolder);

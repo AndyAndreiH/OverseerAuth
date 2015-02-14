@@ -6,7 +6,7 @@
 
     <groupId>com.katgamestudios.andyandreih</groupId>
     <artifactId>OverseerAuth</artifactId>
-    <version>0.0.1b-SNAPSHOT</version>
+    <version>0.0.2-SNAPSHOT</version>
     <description>Overseer Suite's authentication module</description>
 
     <build>
@@ -44,7 +44,7 @@
         <dependency>
             <groupId>com.katgamestudios.andyandreih</groupId>
             <artifactId>OverseerMain</artifactId>
-            <version>0.0.2-SNAPSHOT</version>
+            <version>0.0.3-SNAPSHOT</version>
             <type>jar</type>
             <scope>provided</scope>
         </dependency>
