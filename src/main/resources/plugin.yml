@@ -3,7 +3,7 @@ author: AndyAndreiH
 authors: [Migs84]
 website: http://katgamestudios.com/
 main: com.katgamestudios.andyandreih.overseer.auth.OverseerAuth
-version: 0.0.1-SNAPSHOT
+version: 0.0.1b-SNAPSHOT
 depend: [OverseerMain]
 database: false
 commands:
@@ -12,7 +12,7 @@ commands:
       usage: /overseer [subcommand/help]
       aliases: os
 permissions:
-   overseer.auth.*:
+    overseer.auth.*:
        description: Master permission node
        children:
           overseer.auth.simulate: true
