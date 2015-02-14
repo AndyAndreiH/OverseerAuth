@@ -1,0 +1,125 @@
+package com.katgamestudios.andyandreih.overseer.auth;
+
+import com.katgamestudios.andyandreih.overseer.main.UUIDFetcher;
+import org.bukkit.ChatColor;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Map;
+import java.util.UUID;
+
+public class LocalCommandListener implements CommandExecutor {
+    OverseerAuth mainClass;
+
+    final protected static char[] hexArray = "0123456789ABCDEF".toCharArray();
+
+    @Override
+    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+        if(cmd.getName().equalsIgnoreCase("login")) {
+            if(sender instanceof Player) {
+                Player player = (Player) sender;
+                if(args.length == 1) {
+                    if(mainClass.playerLogin.get(player.getDisplayName()) == false) {
+                        UUID userUUID = null;
+                        try {
+                            userUUID = UUIDFetcher.getUUIDOf(player.getDisplayName());
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        Map<String, String> userData = mainClass.dbCtrl.getUser(userUUID.toString());
+                        if (userData.containsKey("id")) {
+                            String processedPass = args[1] + ":" + userData.get("salt");
+                            MessageDigest md = null;
+                            try {
+                                md = MessageDigest.getInstance("SHA-256");
+                            } catch (NoSuchAlgorithmException e) {
+                                e.printStackTrace();
+                            }
+                            byte[] passBytes = new byte[0];
+                            try {
+                                passBytes = processedPass.getBytes("UTF-8");
+                            } catch (UnsupportedEncodingException e) {
+                                e.printStackTrace();
+                            }
+                            byte[] securePassBytes = md.digest(passBytes);
+                            String securePass = bytesToHex(securePassBytes);
+                            if (userData.get("password").equalsIgnoreCase(securePass)) {
+                                mainClass.playerLogin.replace(((Player) sender).getPlayer().getDisplayName(), true);
+                                player.sendMessage(ChatColor.GREEN + "[Auth] Logged in successfully!");
+                                return true;
+                            } else {
+                                player.sendMessage(ChatColor.RED + "[Auth] The password is incorrect!");
+                                return true;
+                            }
+                        }else {
+                            player.sendMessage(ChatColor.RED + "[Auth] Please register using the /register <password> command!");
+                            return true;
+                        }
+                    } else {
+                        player.sendMessage(ChatColor.RED + "[Auth] You are already logged in!");
+                        return true;
+                    }
+                } else {
+                    player.sendMessage(ChatColor.RED + "SYNTAX: /login <password>");
+                    return true;
+                }
+            } else {
+                sender.sendMessage(ChatColor.RED + "[Auth] Only players can use this command!");
+                return true;
+            }
+        }
+        else if(cmd.getName().equalsIgnoreCase("register")) {
+            if(sender instanceof Player) {
+                Player player = (Player) sender;
+                if (args.length == 1) {
+                    if (mainClass.playerLogin.get(player.getDisplayName()) == false) {
+                        UUID userUUID = null;
+                        try {
+                            userUUID = UUIDFetcher.getUUIDOf(player.getDisplayName());
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        Map<String, String> userData = mainClass.dbCtrl.getUser(userUUID.toString());
+                        if (userData.containsKey("id")) {
+                            player.sendMessage(ChatColor.RED + "[Auth] Please log in using the /login <password> command!");
+                            return true;
+                        } else {
+                            try {
+                                mainClass.dbCtrl.registerUser(player.getDisplayName(), args[0]);
+                                player.sendMessage(ChatColor.GREEN + "[Auth] Successfully registered!");
+                                player.sendMessage(ChatColor.GREEN + "[Auth] Please log in using the /login <password> command!");
+                            } catch (NoSuchAlgorithmException e) {
+                                e.printStackTrace();
+                            } catch (UnsupportedEncodingException e) {
+                                e.printStackTrace();
+                            }
+                            return true;
+                        }
+                    }
+                } else {
+                    player.sendMessage(ChatColor.RED + "SYNTAX: /register <password>");
+                    return true;
+                }
+            } else {
+                sender.sendMessage(ChatColor.RED + "[Auth] Only players can use this command!");
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static String bytesToHex(byte[] bytes) {
+        char[] hexChars = new char[bytes.length * 2];
+        for ( int j = 0; j < bytes.length; j++ ) {
+            int v = bytes[j] & 0xFF;
+            hexChars[j * 2] = hexArray[v >>> 4];
+            hexChars[j * 2 + 1] = hexArray[v & 0x0F];
+        }
+        return new String(hexChars);
+    }
+}

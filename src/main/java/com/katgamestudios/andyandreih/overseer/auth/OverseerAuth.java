@@ -11,17 +11,21 @@ import java.util.UUID;
 public final class OverseerAuth extends JavaPlugin {
     public static DatabaseController dbCtrl = new DatabaseController();
     public static EventListener eventListen = new EventListener();
+    public static LocalCommandListener cmdExec = new LocalCommandListener();
 
     Map<String, Boolean> playerLogin = new HashMap<String, Boolean>();
 
     @Override
     public void onEnable() {
         eventListen.mainClass = this;
+        cmdExec.mainClass = this;
 
         getServer().getPluginManager().registerEvents(eventListen, this);
         getLogger().info("Event listeners registered.");
 
         CommandListener.registerSubCommand("simulate", new AuthCommandListener());
+        getCommand("login").setExecutor(cmdExec);
+        getCommand("register").setExecutor(cmdExec);
         getLogger().info("Commands registered.");
 
         dbCtrl.initDb(OverseerMain.dataFolder);
