@@ -23,12 +23,10 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
-        <module name="Auth" />
         <module name="OverseerAuth" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="Auth" target="1.8" />
       <module name="OverseerAuth" target="1.8" />
     </bytecodeTargetLevel>
   </component>

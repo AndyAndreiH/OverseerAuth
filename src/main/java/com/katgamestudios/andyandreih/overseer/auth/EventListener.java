@@ -1,5 +1,6 @@
-package io.github.andyandreih.overseer.auth;
+package com.katgamestudios.andyandreih.overseer.auth;
 
+import com.katgamestudios.andyandreih.overseer.main.UUIDFetcher;
 import org.bukkit.event.Listener;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerLoginEvent;
@@ -13,20 +14,13 @@ public final class EventListener implements Listener {
 
     @EventHandler
     public void onLogin(PlayerLoginEvent event) {
-        UUIDFetcher fetcher = new UUIDFetcher(Arrays.asList(event.getPlayer().getDisplayName()));
-        Map<String, UUID> userUUIDs = null;
+        UUID userUUID = null;
         try {
-            userUUIDs = fetcher.call();
+            userUUID = UUIDFetcher.getUUIDOf(event.getPlayer().getDisplayName());
         } catch (Exception e) {
             e.printStackTrace();
         }
-        String userUUID = "";
-        for(Map.Entry<String, UUID> entry : userUUIDs.entrySet()) {
-            if(entry.getKey().equalsIgnoreCase(event.getPlayer().getDisplayName())) {
-                userUUID = entry.getValue().toString();
-            }
-        }
-        Map<String, String> userData = mainClass.dbCtrl.getUser(userUUID);
+        Map<String, String> userData = mainClass.dbCtrl.getUser(userUUID.toString());
         if(userData.containsKey("id")) {
             event.getPlayer().sendMessage("Please log in using the /login <password> command!");
         }

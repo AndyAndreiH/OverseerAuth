@@ -1,5 +1,8 @@
-package io.github.andyandreih.overseer.auth;
+package com.katgamestudios.andyandreih.overseer.auth;
 
+import com.katgamestudios.andyandreih.overseer.main.DatabaseController;
+import com.katgamestudios.andyandreih.overseer.main.OverseerMain;
+import com.katgamestudios.andyandreih.overseer.main.UUIDFetcher;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -8,8 +11,8 @@ import java.util.Map;
 import java.util.UUID;
 
 public final class OverseerAuth extends JavaPlugin {
-    public static CommandListener cmdExec = new CommandListener();
     public static DatabaseController dbCtrl = new DatabaseController();
+    public static CommandListener cmdExec = new CommandListener();
     public static EventListener eventListen = new EventListener();
 
     Map<String, Boolean> playerLogin = new HashMap<String, Boolean>();
@@ -17,13 +20,7 @@ public final class OverseerAuth extends JavaPlugin {
     @Override
     public void onEnable() {
         cmdExec.mainClass = this;
-        dbCtrl.mainClass = this;
         eventListen.mainClass = this;
-
-        if(!getDataFolder().exists()) {
-            getDataFolder().mkdir();
-            getLogger().info("Created plugin folder.");
-        }
 
         getServer().getPluginManager().registerEvents(eventListen, this);
         getLogger().info("Event listeners registered.");
@@ -31,11 +28,9 @@ public final class OverseerAuth extends JavaPlugin {
         getCommand("overseer").setExecutor(cmdExec);
         getLogger().info("Commands registered.");
 
-        dbCtrl.initDb(getDataFolder().getAbsolutePath());
-        if(dbCtrl.openDb()) {
-            dbCtrl.generateTable();
-        }
-        getLogger().info("Generated local database.");
+        dbCtrl.initDb(OverseerMain.dataFolder);
+        dbCtrl.openDb();
+        getLogger().info("Connected to database.");
 
         for(Player player : this.getServer().getOnlinePlayers()) {
             UUID playerUUID = null;

@@ -1,5 +1,6 @@
-package io.github.andyandreih.overseer.auth;
+package com.katgamestudios.andyandreih.overseer.auth;
 
+import com.katgamestudios.andyandreih.overseer.main.UUIDFetcher;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -62,7 +63,7 @@ public class CommandListener implements CommandExecutor {
                     else if(args[1].equalsIgnoreCase("register")) {
                         if(args.length == 4) {
                             try {
-                                mainClass.dbCtrl.insertUser(args[2], args[3]);
+                                mainClass.dbCtrl.registerUser(args[2], args[3]);
                             } catch (NoSuchAlgorithmException e) {
                                 e.printStackTrace();
                             } catch (UnsupportedEncodingException e) {
@@ -134,20 +135,13 @@ public class CommandListener implements CommandExecutor {
     }
 
     private void simulateJoin(CommandSender sender, String userName) {
-        UUIDFetcher fetcher = new UUIDFetcher(Arrays.asList(userName));
-        Map<String, UUID> userUUIDs = null;
+        UUID userUUID = null;
         try {
-            userUUIDs = fetcher.call();
+            userUUID = UUIDFetcher.getUUIDOf(userName);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        String userUUID = "";
-        for(Map.Entry<String, UUID> entry : userUUIDs.entrySet()) {
-            if(entry.getKey().equalsIgnoreCase(userName)) {
-                userUUID = entry.getValue().toString();
-            }
-        }
-        Map<String, String> userData = mainClass.dbCtrl.getUser(userUUID);
+        Map<String, String> userData = mainClass.dbCtrl.getUser(userUUID.toString());
         if(userData.containsKey("id")) {
             sender.sendMessage("Please log in using the /login <password> command!");
         }
@@ -157,20 +151,13 @@ public class CommandListener implements CommandExecutor {
     }
 
     private void simulateLogin(CommandSender sender, String userName, String password) throws NoSuchAlgorithmException, UnsupportedEncodingException {
-        UUIDFetcher fetcher = new UUIDFetcher(Arrays.asList(userName));
-        Map<String, UUID> userUUIDs = null;
+        UUID userUUID = null;
         try {
-            userUUIDs = fetcher.call();
+            userUUID = UUIDFetcher.getUUIDOf(userName);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        String userUUID = "";
-        for(Map.Entry<String, UUID> entry : userUUIDs.entrySet()) {
-            if(entry.getKey().equalsIgnoreCase(userName)) {
-                userUUID = entry.getValue().toString();
-            }
-        }
-        Map<String, String> userData = mainClass.dbCtrl.getUser(userUUID);
+        Map<String, String> userData = mainClass.dbCtrl.getUser(userUUID.toString());
         if(userData.containsKey("id")) {
             String processedPass = password + ":" + userData.get("salt");
             MessageDigest md = MessageDigest.getInstance("SHA-256");

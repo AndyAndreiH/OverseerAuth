@@ -1,11 +1,21 @@
 name: OverseerAuth
-main: io.github.andyandreih.overseer.auth.OverseerAuth
+author: AndyAndreiH
+authors: [Migs84]
+website: http://katgamestudios.com/
+main: com.katgamestudios.andyandreih.overseer.auth.OverseerAuth
 version: 0.0.1-SNAPSHOT
 depend: [OverseerMain]
+database: false
 commands:
    overseer:
       description: The main command for Overseer
       usage: /overseer [subcommand/help]
-   os:
-      description: The main command for Overseer
-      usage: /os [subcommand/help]
+      aliases: os
+permissions:
+   overseer.auth.*:
+       description: Master permission node
+       children:
+          overseer.auth.simulate: true
+    overseer.auth.simulate:
+       description: Gives access to the simulator
+       default: op
