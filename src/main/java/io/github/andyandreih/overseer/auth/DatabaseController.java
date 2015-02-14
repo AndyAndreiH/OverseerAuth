@@ -1,10 +1,9 @@
-package io.github.andyandreih.overseerauth;
+package io.github.andyandreih.overseer.auth;
 
 import lib.PatPeter.SQLibrary.Database;
 import lib.PatPeter.SQLibrary.MySQL;
 import lib.PatPeter.SQLibrary.SQLite;
 
-import javax.xml.transform.Result;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

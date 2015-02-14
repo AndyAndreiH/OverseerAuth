@@ -7,7 +7,7 @@
     <groupId>io.github.AndyAndreiH</groupId>
     <artifactId>OverseerAuth</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <description>Overseer's Authentication system</description>
+    <description>Overseer Suite's authentication module</description>
 
     <build>
         <plugins>
@@ -28,9 +28,8 @@
             <url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
         </repository>
         <repository>
-            <id>dakani</id>
-            <name>Dakani Nexus Repo</name>
-            <url>http://repo.dakanilabs.com/content/repositories/public/</url>
+            <id>overseer-main</id>
+            <url>http://repository.katgamestudios.com/</url>
         </repository>
     </repositories>
 
@@ -43,11 +42,18 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>lib.PatPeter.SQLibrary</groupId>
-            <artifactId>SQLibrary</artifactId>
-            <version>7.1</version>
+            <groupId>io.github.AndyAndreiH</groupId>
+            <artifactId>Overseer</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
             <type>jar</type>
             <scope>provided</scope>
         </dependency>
     </dependencies>
+
+    <distributionManagement>
+        <repository>
+            <id>overseer-auth</id>
+            <url>file:///C:/Users/Andrei/IdeaProjects/OverseerAuth/out/repo</url>
+        </repository>
+    </distributionManagement>
 </project>

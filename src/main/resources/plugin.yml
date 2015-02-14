@@ -1,8 +1,11 @@
 name: OverseerAuth
-main: io.github.andyandreih.overseerauth.OverseerAuth
+main: io.github.andyandreih.overseer.auth.OverseerAuth
 version: 0.0.1-SNAPSHOT
-depend: [SQLibrary]
+depend: [OverseerMain]
 commands:
    overseer:
       description: The main command for Overseer
-      usage: /overseer
+      usage: /overseer [subcommand/help]
+   os:
+      description: The main command for Overseer
+      usage: /os [subcommand/help]

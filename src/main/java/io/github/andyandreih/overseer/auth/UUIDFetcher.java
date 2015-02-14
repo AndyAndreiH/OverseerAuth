@@ -1,4 +1,4 @@
-package io.github.andyandreih.overseerauth;
+package io.github.andyandreih.overseer.auth;
 
 import com.google.common.collect.ImmutableList;
 import org.json.simple.JSONArray;
