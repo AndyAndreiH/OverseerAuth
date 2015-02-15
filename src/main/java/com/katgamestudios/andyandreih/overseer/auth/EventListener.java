@@ -42,14 +42,14 @@ public final class EventListener implements Listener {
             mainClass.getLogger().info(authPrefix + ChatColor.WHITE + playerName + " is registered.");
             mainClass.getServer().broadcastMessage(authPrefix + ChatColor.GOLD + playerName + ChatColor.GRAY + " joined the server.");
             event.getPlayer().sendMessage(authPrefix + "Welcome, " + ChatColor.GOLD + playerName);
-            event.getPlayer().sendMessage(authPrefix + "Please log in using the " + ChatColor.DARK_BLUE + "/login <password>" + ChatColor.GRAY + " command!");
+            event.getPlayer().sendMessage(authPrefix + "Please log in using the " + ChatColor.BLUE + "/login <password>" + ChatColor.GRAY + " command!");
         }
         else {
             mainClass.getLogger().info(authPrefix + ChatColor.WHITE + playerName + " is not registered.");
             mainClass.getServer().broadcastMessage(authPrefix + ChatColor.GOLD + playerName + ChatColor.GRAY + " joined the server.");
             mainClass.getServer().broadcastMessage(authPrefix + "Everyone welcome " + ChatColor.GOLD + playerName + ChatColor.GRAY + " to the server!");
             event.getPlayer().sendMessage(authPrefix + "Welcome, " + ChatColor.GOLD + playerName);
-            event.getPlayer().sendMessage(authPrefix + "Please register using the " + ChatColor.DARK_BLUE + "/register <password>" + ChatColor.GRAY + " command!");
+            event.getPlayer().sendMessage(authPrefix + "Please register using the " + ChatColor.BLUE + "/register <password>" + ChatColor.GRAY + " command!");
         }
     }
 

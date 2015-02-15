@@ -63,7 +63,7 @@ public class LocalCommandListener implements CommandExecutor {
                                 return true;
                             }
                         }else {
-                            player.sendMessage(authPrefix + "Please register using the /register <password> command!");
+                            player.sendMessage(authPrefix + "Please register using the " + ChatColor.BLUE + "/register <password>" + ChatColor.GRAY + " command!");
                             return true;
                         }
                     } else {
@@ -92,13 +92,13 @@ public class LocalCommandListener implements CommandExecutor {
                         }
                         Map<String, String> userData = mainClass.dbCtrl.getUser(userUUID.toString());
                         if (userData.containsKey("id")) {
-                            player.sendMessage(authPrefix + ChatColor.RED + "Please log in using the /login <password> command!");
+                            player.sendMessage(authPrefix + ChatColor.RED + "Please log in using the " + ChatColor.BLUE + "/login <password>" + ChatColor.GRAY + " command!");
                             return true;
                         } else {
                             try {
                                 mainClass.dbCtrl.registerUser(player.getDisplayName(), args[0]);
                                 player.sendMessage(authPrefix + ChatColor.GREEN + "Successfully registered!");
-                                player.sendMessage(authPrefix + "Please log in using the /login <password> command!");
+                                player.sendMessage(authPrefix + "Please log in using the " + ChatColor.BLUE + "/login <password>" + ChatColor.GRAY + " command!");
                                 RegisterEvent registerEvent = new RegisterEvent(player);
                                 mainClass.getServer().getPluginManager().callEvent(registerEvent);
                             } catch (NoSuchAlgorithmException e) {
