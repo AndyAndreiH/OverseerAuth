@@ -18,6 +18,8 @@ public class LocalCommandListener implements CommandExecutor {
 
     final protected static char[] hexArray = "0123456789ABCDEF".toCharArray();
 
+    private final String authPrefix = ChatColor.DARK_GRAY + "[AUTH] " + ChatColor.GRAY;
+
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if(cmd.getName().equalsIgnoreCase("login")) {
@@ -33,7 +35,7 @@ public class LocalCommandListener implements CommandExecutor {
                         }
                         Map<String, String> userData = mainClass.dbCtrl.getUser(userUUID.toString());
                         if (userData.containsKey("id")) {
-                            String processedPass = args[1] + ":" + userData.get("salt");
+                            String processedPass = args[0] + ":" + userData.get("salt");
                             MessageDigest md = null;
                             try {
                                 md = MessageDigest.getInstance("SHA-256");
@@ -50,26 +52,30 @@ public class LocalCommandListener implements CommandExecutor {
                             String securePass = bytesToHex(securePassBytes);
                             if (userData.get("password").equalsIgnoreCase(securePass)) {
                                 mainClass.playerLogin.replace(((Player) sender).getPlayer().getDisplayName(), true);
-                                player.sendMessage(ChatColor.GREEN + "[Auth] Logged in successfully!");
+                                player.sendMessage(authPrefix + ChatColor.GREEN + "Logged in successfully!");
+                                LoginEvent loginEvent = new LoginEvent((Player) sender);
+                                mainClass.getServer().getPluginManager().callEvent(loginEvent);
                                 return true;
                             } else {
-                                player.sendMessage(ChatColor.RED + "[Auth] The password is incorrect!");
+                                player.sendMessage(authPrefix + ChatColor.RED + "The password is incorrect!");
+                                FailedLoginEvent failedLoginEvent = new FailedLoginEvent((Player) sender);
+                                mainClass.getServer().getPluginManager().callEvent(failedLoginEvent);
                                 return true;
                             }
                         }else {
-                            player.sendMessage(ChatColor.RED + "[Auth] Please register using the /register <password> command!");
+                            player.sendMessage(authPrefix + "Please register using the /register <password> command!");
                             return true;
                         }
                     } else {
-                        player.sendMessage(ChatColor.RED + "[Auth] You are already logged in!");
+                        player.sendMessage(authPrefix + "You are already logged in!");
                         return true;
                     }
                 } else {
-                    player.sendMessage(ChatColor.RED + "SYNTAX: /login <password>");
+                    player.sendMessage(authPrefix + ChatColor.RED + "SYNTAX: /login <password>");
                     return true;
                 }
             } else {
-                sender.sendMessage(ChatColor.RED + "[Auth] Only players can use this command!");
+                sender.sendMessage(authPrefix + ChatColor.RED + "Only players can use this command!");
                 return true;
             }
         }
@@ -86,13 +92,15 @@ public class LocalCommandListener implements CommandExecutor {
                         }
                         Map<String, String> userData = mainClass.dbCtrl.getUser(userUUID.toString());
                         if (userData.containsKey("id")) {
-                            player.sendMessage(ChatColor.RED + "[Auth] Please log in using the /login <password> command!");
+                            player.sendMessage(authPrefix + ChatColor.RED + "Please log in using the /login <password> command!");
                             return true;
                         } else {
                             try {
                                 mainClass.dbCtrl.registerUser(player.getDisplayName(), args[0]);
-                                player.sendMessage(ChatColor.GREEN + "[Auth] Successfully registered!");
-                                player.sendMessage(ChatColor.GREEN + "[Auth] Please log in using the /login <password> command!");
+                                player.sendMessage(authPrefix + ChatColor.GREEN + "Successfully registered!");
+                                player.sendMessage(authPrefix + "Please log in using the /login <password> command!");
+                                RegisterEvent registerEvent = new RegisterEvent(player);
+                                mainClass.getServer().getPluginManager().callEvent(registerEvent);
                             } catch (NoSuchAlgorithmException e) {
                                 e.printStackTrace();
                             } catch (UnsupportedEncodingException e) {
@@ -102,11 +110,11 @@ public class LocalCommandListener implements CommandExecutor {
                         }
                     }
                 } else {
-                    player.sendMessage(ChatColor.RED + "SYNTAX: /register <password>");
+                    player.sendMessage(authPrefix + ChatColor.RED + "SYNTAX: /register <password>");
                     return true;
                 }
             } else {
-                sender.sendMessage(ChatColor.RED + "[Auth] Only players can use this command!");
+                sender.sendMessage(authPrefix + ChatColor.RED + "Only players can use this command!");
                 return true;
             }
         }

@@ -21,12 +21,10 @@ public final class OverseerAuth extends JavaPlugin {
         cmdExec.mainClass = this;
 
         getServer().getPluginManager().registerEvents(eventListen, this);
-        getLogger().info("Event listeners registered.");
 
         CommandListener.registerSubCommand("simulate", new AuthCommandListener());
         getCommand("login").setExecutor(cmdExec);
         getCommand("register").setExecutor(cmdExec);
-        getLogger().info("Commands registered.");
 
         dbCtrl.initDb(OverseerMain.dataFolder);
         dbCtrl.openDb();
