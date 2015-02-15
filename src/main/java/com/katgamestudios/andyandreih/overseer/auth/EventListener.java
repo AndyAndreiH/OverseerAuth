@@ -6,6 +6,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -16,6 +17,7 @@ public final class EventListener implements Listener {
 
     @EventHandler
     public void onLogin(PlayerLoginEvent event) {
+        mainClass.playerLogin.put(event.getPlayer().getDisplayName(), false);
         UUID userUUID = null;
         try {
             userUUID = UUIDFetcher.getUUIDOf(event.getPlayer().getDisplayName());
@@ -29,6 +31,11 @@ public final class EventListener implements Listener {
         else {
             event.getPlayer().sendMessage("Please register using the /register <password> command!");
         }
+    }
+
+    @EventHandler
+    public void onQuit(PlayerQuitEvent event) {
+        mainClass.playerLogin.remove(event.getPlayer().getDisplayName());
     }
 
     @EventHandler
