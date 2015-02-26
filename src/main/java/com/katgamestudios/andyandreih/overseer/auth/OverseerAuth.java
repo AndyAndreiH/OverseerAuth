@@ -9,7 +9,6 @@ import java.util.Map;
 import java.util.UUID;
 
 public final class OverseerAuth extends JavaPlugin {
-    public static DatabaseController dbCtrl = new DatabaseController();
     public static EventListener eventListen = new EventListener();
     public static LocalCommandListener cmdExec = new LocalCommandListener();
 
@@ -25,10 +24,6 @@ public final class OverseerAuth extends JavaPlugin {
         CommandListener.registerSubCommand("simulate", new AuthCommandListener());
         getCommand("login").setExecutor(cmdExec);
         getCommand("register").setExecutor(cmdExec);
-
-        dbCtrl.initDb(OverseerMain.dataFolder);
-        dbCtrl.openDb();
-        getLogger().info("Connected to database.");
 
         for(Player player : this.getServer().getOnlinePlayers()) {
             UUID playerUUID = null;

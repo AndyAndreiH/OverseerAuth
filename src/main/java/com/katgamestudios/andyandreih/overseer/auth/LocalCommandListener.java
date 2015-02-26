@@ -1,5 +1,6 @@
 package com.katgamestudios.andyandreih.overseer.auth;
 
+import com.katgamestudios.andyandreih.overseer.main.OverseerMain;
 import com.katgamestudios.andyandreih.overseer.main.UUIDFetcher;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -33,7 +34,7 @@ public class LocalCommandListener implements CommandExecutor {
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-                        Map<String, String> userData = mainClass.dbCtrl.getUser(userUUID.toString());
+                        Map<String, String> userData = OverseerMain.dbCtrl.getUser(userUUID.toString());
                         if (userData.containsKey("id")) {
                             String processedPass = args[0] + ":" + userData.get("salt");
                             MessageDigest md = null;
@@ -90,13 +91,13 @@ public class LocalCommandListener implements CommandExecutor {
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-                        Map<String, String> userData = mainClass.dbCtrl.getUser(userUUID.toString());
+                        Map<String, String> userData = OverseerMain.dbCtrl.getUser(userUUID.toString());
                         if (userData.containsKey("id")) {
                             player.sendMessage(authPrefix + ChatColor.RED + "Please log in using the " + ChatColor.BLUE + "/login <password>" + ChatColor.GRAY + " command!");
                             return true;
                         } else {
                             try {
-                                mainClass.dbCtrl.registerUser(player.getDisplayName(), args[0]);
+                                OverseerMain.dbCtrl.registerUser(player.getDisplayName(), args[0]);
                                 player.sendMessage(authPrefix + ChatColor.GREEN + "Successfully registered!");
                                 player.sendMessage(authPrefix + "Please log in using the " + ChatColor.BLUE + "/login <password>" + ChatColor.GRAY + " command!");
                                 RegisterEvent registerEvent = new RegisterEvent(player);

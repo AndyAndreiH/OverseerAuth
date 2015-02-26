@@ -1,5 +1,6 @@
 package com.katgamestudios.andyandreih.overseer.auth;
 
+import com.katgamestudios.andyandreih.overseer.main.OverseerMain;
 import com.katgamestudios.andyandreih.overseer.main.UUIDFetcher;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -37,7 +38,7 @@ public final class EventListener implements Listener {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        Map<String, String> userData = mainClass.dbCtrl.getUser(userUUID.toString());
+        Map<String, String> userData = OverseerMain.dbCtrl.getUser(userUUID.toString());
         if(userData.containsKey("id")) {
             mainClass.getLogger().info(authPrefix + ChatColor.WHITE + playerName + " is registered.");
             mainClass.getServer().broadcastMessage(authPrefix + ChatColor.GOLD + playerName + ChatColor.GRAY + " joined the server.");

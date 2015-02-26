@@ -6,7 +6,7 @@
 
     <groupId>com.katgamestudios.andyandreih</groupId>
     <artifactId>OverseerAuth</artifactId>
-    <version>0.1</version>
+    <version>0.1.1</version>
     <description>Overseer Suite's authentication module</description>
 
     <build>
